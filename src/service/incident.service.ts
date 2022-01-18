@@ -24,7 +24,7 @@ export async function findIncident(
 
 export async function listIncident() {
     try{
-        const result = await IncidentModel.find({}).lean();
+        const result = await IncidentModel.find().populate({ path: 'callerName' }).populate({ path: 'category' }).populate({ path: 'owner', select: '_id email firstName lastName' });
         return result;
     } catch(e) {
         throw e;
@@ -36,7 +36,7 @@ export async function findAndUpdateIncident(
     update: UpdateQuery<IncidentDocument>,
     options: QueryOptions
 ){
-    return IncidentModel.findOneAndUpdate(query, update, options);
+    return IncidentModel.findOneAndUpdate(query, update, options).populate({ path: 'callerName' }).populate({ path: 'category' }).populate({ path: 'owner', select: '_id email firstName lastName' });
 }
 
 export async function deleteIncident(query: FilterQuery<IncidentDocument>) {

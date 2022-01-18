@@ -21,7 +21,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     const accessToken = signJwt(
         { ...user, session: session._id },
         "accessTokenPrivateKey",
-        { expiresIn: config.get("accessTokenTtl") } // 60 minutes
+        { expiresIn: config.get("accessTokenTtl") } // 15 minutes
     );
 
     // CREATE A REFRESH TOKEN
@@ -31,7 +31,26 @@ export async function createUserSessionHandler(req: Request, res: Response) {
         { expiresIn: config.get("refreshTokenTtl") } // 15 minutes
     );
 
-    return res.send({ accessToken, refreshToken });
+    return res.send({ user, accessToken, refreshToken });
+    /*res.cookie("accessToken", accessToken, {
+        maxAge: 900000, // 15 minutes
+        httpOnly: true,
+        domain: "localhost",
+        path: "/",
+        sameSite: "strict",
+        secure: false
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+        maxAge: 3.154e10,
+        httpOnly: true,
+        domain: "localhost",
+        path: "/",
+        sameSite: "strict",
+        secure: false
+    });
+
+    return res.send({ accessToken, refreshToken });*/
 }
 
 export async function getUserSessionsHandler(req: Request, res: Response){

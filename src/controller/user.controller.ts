@@ -34,3 +34,7 @@ export async function getUserHandler(
     }
     return res.send(_user);
 }
+
+export async function getCurrentUser(req: Request, res: Response) {
+    return res.send(res.locals.user);
+}

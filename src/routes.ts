@@ -1,5 +1,5 @@
 import { Express, Request, Response } from "express";
-import { createUserHandler, getUserHandler, listUserHandler } from "./controller/user.controller";
+import { createUserHandler, getCurrentUser, getUserHandler, listUserHandler } from "./controller/user.controller";
 import validateResource from "./middleware/validateResource";
 import { createUserSchema, listUserSchema, getUserSchema } from './schema/user.schema';
 import { createUserSessionHandler, getUserSessionsHandler, deleteSessionHandler } from "./controller/session.controller";
@@ -55,6 +55,8 @@ function routes(app: Express){
     app.post("/api/users", validateResource(createUserSchema), createUserHandler);
 
     app.get("/api/users", [ requireUser, validateResource(listUserSchema) ], listUserHandler);
+
+    app.get("/api/me", requireUser, getCurrentUser);
 
     app.get("/api/users/:_id", [ requireUser, validateResource(getUserSchema) ], getUserHandler);
 

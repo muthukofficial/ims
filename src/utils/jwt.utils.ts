@@ -34,7 +34,7 @@ export function verifyJwt(
         console.error(e);
         return {
             valid: false,
-            expired: e.message === "jet token expired",
+            expired: e.message === "jwt token expired",
             decoded: null
         };
     }
